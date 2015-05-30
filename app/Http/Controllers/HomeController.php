@@ -13,11 +13,10 @@ class HomeController extends Controller {
 	|
 	*/
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
+    /**
+     * Create a new controller instance.
+     *
+     */
 	public function __construct()
 	{
 		$this->middleware('auth');
@@ -32,5 +31,12 @@ class HomeController extends Controller {
 	{
 		return view('home');
 	}
+
+
+    public function about()
+    {
+        return view('home.about');
+    }
+
 
 }
