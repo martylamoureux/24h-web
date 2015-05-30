@@ -64,19 +64,18 @@ class ContainersController extends Controller
             'capacity' => 'required|in:1,2',
             'ship_id' => 'required',
         ]);
-/*
-        $ship = Ship::find($req->get('ship_id'))->first();
+
+
+        $ship = Ship::find($req->get('ship_id'))->limit(1);
 
         $totalCapacity = 0;
 
-        foreach($ship->containers as $container){
+        foreach ($ship->containers as $container) {
             $totalCapacity += $container->capacity;
         }
+        
+        if ($ship->capacity > $totalCapacity) {
 
-        dd($totalCapacity);
-
-        if($ship->capacity > $totalCapacity){
-*/
             $container = new Container($req->all());
             $container->client_id = $client_id;
             $container->save();
@@ -84,53 +83,57 @@ class ContainersController extends Controller
             $req->session()->flash('success', "Le conteneur $container a bien été créé.");
 
             return redirect()->route('clients.detail', $client_id);
-        /*
+
+            }
+            $req->session()->flash('error', "Le conteneur $container ne peux pas être crée, il a une capacité trop élevée");
+
+            return redirect()->route('clients.detail', $client_id);
+
+
         }
-        $req->session()->flash('error', "Le conteneur $container ne peux pas être crée, il a une capacité trop élevée");
 
-        return redirect()->route('clients.detail', $client_id);
-*/
+        public
+        function edit($client_id, $container_id)
+        {
+            $container = Container::findOrFail($container_id);
+            return view('containers.form', compact('container', 'client_id'));
+        }
+
+        public
+        function update($client_id, $container_id, Request $req)
+        {
+            $container = Container::findOrFail($container_id);
+            $this->validate($req, [
+                'capacity' => 'required|in:1,2',
+                'ship_id' => 'required',
+            ]);
+
+            $container->fill($req->all());
+            $container->save();
+
+            $req->session()->flash('success', "Le conteneur $container a bien été modifié.");
+
+            return redirect()->route('clients.detail', $client_id);
+        }
+
+        public
+        function delete($client_id, $container_id, Request $req)
+        {
+            $container = Container::findOrFail($container_id);
+            $container->delete();
+
+            $req->session()->flash('success', "Le conteneur $container a bien été supprimé.");
+            return redirect()->route('clients.detail', $client_id);
+        }
+
+        public
+        function detail($client_id, $container_id, Request $req, Guard $auth)
+        {
+            if ($auth->user()->type == 'CO' || ($auth->user()->type == 'CL' && $client_id != $auth->user()->client->id))
+                abort(403, "Non autorisé");
+
+            $container = Container::findOrFail($container_id);
+            return view('containers.detail', compact('container', 'client_id'));
+        }
 
     }
-
-    public function edit($client_id, $container_id)
-    {
-        $container = Container::findOrFail($container_id);
-        return view('containers.form', compact('container', 'client_id'));
-    }
-
-    public function update($client_id, $container_id, Request $req)
-    {
-        $container = Container::findOrFail($container_id);
-        $this->validate($req, [
-            'capacity' => 'required|in:1,2',
-            'ship_id' => 'required',
-        ]);
-
-        $container->fill($req->all());
-        $container->save();
-
-        $req->session()->flash('success', "Le conteneur $container a bien été modifié.");
-
-        return redirect()->route('clients.detail', $client_id);
-    }
-
-    public function delete($client_id, $container_id, Request $req)
-    {
-        $container = Container::findOrFail($container_id);
-        $container->delete();
-
-        $req->session()->flash('success', "Le conteneur $container a bien été supprimé.");
-        return redirect()->route('clients.detail', $client_id);
-    }
-
-    public function detail($client_id, $container_id, Request $req, Guard $auth)
-    {
-        if ($auth->user()->type == 'CO' || ($auth->user()->type == 'CL' && $client_id != $auth->user()->client->id))
-            abort(403, "Non autorisé");
-
-        $container = Container::findOrFail($container_id);
-        return view('containers.detail', compact('container', 'client_id'));
-    }
-
-}
