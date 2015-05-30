@@ -3,6 +3,7 @@
 use App\Company;
 use App\Container;
 use App\User;
+use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
 
 class ContainersController extends Controller {
@@ -26,7 +27,7 @@ class ContainersController extends Controller {
 	public function __construct()
 	{
 		$this->middleware('agent', ['except' => [
-
+            'detail'
         ]]);
 	}
 
@@ -104,8 +105,11 @@ class ContainersController extends Controller {
         return redirect()->route('clients.detail', $client_id);
     }
 
-    public function detail($client_id, $container_id, Request $req)
+    public function detail($client_id, $container_id, Request $req, Guard $auth)
     {
+        if ($auth->user()->type == 'CO' || ($auth->user()->type == 'CL' && $client_id != $auth->user()->client->id))
+            abort(403, "Non autorisé");
+
         $container = Container::findOrFail($container_id);
         return view('containers.detail', compact('container', 'client_id'));
     }

@@ -18,11 +18,13 @@
     </div>
     <div class="col-md-7">
 
-        <div class="btn-group">
-            <a class="btn btn-success" href="{{ route('ships.add', $company) }}">
-                <i class="fa fa-plus"></i> Nouveau Navire
-            </a>
-        </div>
+        @if (Auth::user()->type == 'AG')
+            <div class="btn-group">
+                <a class="btn btn-success" href="{{ route('ships.add', $company) }}">
+                    <i class="fa fa-plus"></i> Nouveau Navire
+                </a>
+            </div>
+        @endif
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -30,7 +32,9 @@
                     <tr>
                         <th>Nom</th>
                         <th>Capacité</th>
-                        <th> </th>
+                        @if (Auth::user()->type == 'AG')
+                            <th> </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -38,14 +42,16 @@
                         <tr>
                             <td><a href="{{ route('ships.detail', [$company, $ship]) }}">{{ $ship->name }}</a></td>
                             <td>{{ $ship->capacity }} EVP</td>
-                            <td>
-                                <a class="btn btn-primary" rel="tooltip" title="Modifier" href="{{ route('ships.edit', [$company, $ship]) }}">
-                                    <i class="fa fa-pencil"></i>
-                                </a>
-                                <a class="btn btn-danger delete" rel="tooltip" title="Supprimer" href="{{ route('ships.delete', [$company, $ship]) }}">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                            </td>
+                            @if (Auth::user()->type == 'AG')
+                                <td>
+                                    <a class="btn btn-primary" rel="tooltip" title="Modifier" href="{{ route('ships.edit', [$company, $ship]) }}">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a class="btn btn-danger delete" rel="tooltip" title="Supprimer" href="{{ route('ships.delete', [$company, $ship]) }}">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

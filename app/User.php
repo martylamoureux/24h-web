@@ -36,4 +36,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $this->attributes['password'] = bcrypt($value);
     }
 
+    public function company()
+    {
+        return $this->hasOne('App\Company');
+    }
+
+    public function client()
+    {
+        return $this->hasOne('App\Client');
+    }
+
 }

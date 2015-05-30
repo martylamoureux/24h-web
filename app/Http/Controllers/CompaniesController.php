@@ -2,6 +2,7 @@
 
 use App\Company;
 use App\User;
+use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
 
 class CompaniesController extends Controller {
@@ -127,14 +128,18 @@ class CompaniesController extends Controller {
     public function delete($company_id, Request $req)
     {
         $company = Company::findOrFail($company_id);
+        $company->user->delete();
         $company->delete();
 
         $req->session()->flash('success', "La compagnie $company a bien été supprimée.");
         return redirect()->route('companies.index');
     }
 
-    public function detail($company_id, Request $req)
+    public function detail($company_id, Request $req, Guard $auth)
     {
+        if ($auth->user()->type == 'CL' || ($auth->user()->type == 'CO' && $company_id != $auth->user()->company->id))
+            abort(403, "Non autorisé");
+
         $company = Company::findOrFail($company_id);
 
         return view('companies.detail', compact('company'));

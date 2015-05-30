@@ -18,11 +18,13 @@
     </div>
     <div class="col-md-7">
 
-        <div class="btn-group">
-            <a class="btn btn-success" href="{{ route('stops.add', [$company_id, $ship]) }}">
-                <i class="fa fa-plus"></i> Nouvelle Escale
-            </a>
-        </div>
+        @if (Auth::user()->type == 'AG')
+            <div class="btn-group">
+                <a class="btn btn-success" href="{{ route('stops.add', [$company_id, $ship]) }}">
+                    <i class="fa fa-plus"></i> Nouvelle Escale
+                </a>
+            </div>
+        @endif
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -30,7 +32,9 @@
                     <tr>
                         <th>Date Entrée</th>
                         <th>Date Sortie</th>
+                        @if (Auth::user()->type == 'AG')
                         <th> </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -38,6 +42,7 @@
                         <tr>
                             <td>{{ $stop->getDateInString() }}</td>
                             <td>{{ $stop->getDateOutString() }}</td>
+                            @if (Auth::user()->type == 'AG')
                             <td>
                                 <a class="btn btn-primary" rel="tooltip" title="Modifier" href="{{ route('stops.edit', [$company_id, $ship->id, $stop]) }}">
                                     <i class="fa fa-pencil"></i>
@@ -46,6 +51,7 @@
                                     <i class="fa fa-trash-o"></i>
                                 </a>
                             </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>
