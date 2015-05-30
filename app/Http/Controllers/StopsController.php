@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Company;
+use App\Movement;
 use App\Stop;
 use App\User;
 use Carbon\Carbon;
@@ -104,6 +105,8 @@ class StopsController extends Controller {
     public function detail($stop_id, Request $req)
     {
         $stop = Stop::findOrFail($stop_id);
+
+
 
         return view('ships.detail', compact('stop'));
     }

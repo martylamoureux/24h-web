@@ -31,7 +31,7 @@
 
             <div class="form-group">
                 <label for="capacity">Capacité</label>
-                <input type="number" class="form-control" name="capacity" id="capacity" value="{{ Session::get('_old_input.capacity', $ship->exists ? $ship->capacity : '') }}"/>
+                <input type="number" class="form-control" min="0" name="capacity" id="capacity" value="{{ Session::get('_old_input.capacity', $ship->exists ? $ship->capacity : '') }}"/>
             </div>
 
             <div class="text-right">

@@ -30,6 +30,8 @@
                     <tr>
                         <th>Date Entrée</th>
                         <th>Date Sortie</th>
+                        <th>Nombre de chargement</th>
+                        <th>Nombre de déchargement</th>
                         <th> </th>
                     </tr>
                 </thead>
@@ -38,6 +40,11 @@
                         <tr>
                             <td>{{ $stop->getDateInString() }}</td>
                             <td>{{ $stop->getDateOutString() }}</td>
+                            <td>
+                                <span class="badge">{{ App\Movement::where('stop_id', $stop->id)->where('type', 'D')->count() }}</span>
+                            </td>
+                            <td><span class="badge">{{ App\Movement::where('stop_id', $stop->id)->where('type', 'C')->count()
+                            }}</span></td>
                             <td>
                                 <a class="btn btn-primary" rel="tooltip" title="Modifier" href="{{ route('stops.edit', [$company_id, $ship->id, $stop]) }}">
                                     <i class="fa fa-pencil"></i>
