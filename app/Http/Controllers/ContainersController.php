@@ -1,35 +1,35 @@
 <?php namespace App\Http\Controllers;
 
-use App\Company;
 use App\Container;
-use App\User;
+use App\Ship;
 use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
 
-class ContainersController extends Controller {
+class ContainersController extends Controller
+{
 
-	/*
-	|--------------------------------------------------------------------------
-	| Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller renders your application's "dashboard" for users that
-	| are authenticated. Of course, you are free to change or remove the
-	| controller as you wish. It is just here to get your app started!
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Home Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller renders your application's "dashboard" for users that
+    | are authenticated. Of course, you are free to change or remove the
+    | controller as you wish. It is just here to get your app started!
+    |
+    */
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		$this->middleware('agent', ['except' => [
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('agent', ['except' => [
             'detail'
         ]]);
-	}
+    }
 
     public static function routes($router)
     {
@@ -64,14 +64,33 @@ class ContainersController extends Controller {
             'capacity' => 'required|in:1,2',
             'ship_id' => 'required',
         ]);
+/*
+        $ship = Ship::find($req->get('ship_id'))->first();
 
-        $container = new Container($req->all());
-        $container->client_id = $client_id;
-        $container->save();
+        $totalCapacity = 0;
 
-        $req->session()->flash('success', "Le conteneur $container a bien été créé.");
+        foreach($ship->containers as $container){
+            $totalCapacity += $container->capacity;
+        }
+
+        dd($totalCapacity);
+
+        if($ship->capacity > $totalCapacity){
+*/
+            $container = new Container($req->all());
+            $container->client_id = $client_id;
+            $container->save();
+
+            $req->session()->flash('success', "Le conteneur $container a bien été créé.");
+
+            return redirect()->route('clients.detail', $client_id);
+        /*
+        }
+        $req->session()->flash('error', "Le conteneur $container ne peux pas être crée, il a une capacité trop élevée");
 
         return redirect()->route('clients.detail', $client_id);
+*/
+
     }
 
     public function edit($client_id, $container_id)

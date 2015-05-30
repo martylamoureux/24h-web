@@ -18,8 +18,8 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
-<nav class="navbar navbar-default">
+<body style="padding-top:60px;">
+<nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -29,7 +29,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('/') }}"><strong>Gestion portuaire le havre</strong> <i
+            <a class="navbar-brand" href="{{ url('/') }}"><strong>Gestion portuaire le Havre</strong> <i
                         class="text-danger">24h</i></a>
         </div>
 
@@ -76,36 +76,7 @@
 
 	<div class="container">
 
-    @if (Session::has('success'))
-        <div class="alert alert-success">
-            <i class="fa fa-check-circle"></i> {!! Session::get('success') !!}
-        </div>
-    @endif
-    @if (Session::has('error'))
-        <div class="alert alert-danger">
-            <i class="fa fa-times-circle"></i> {!!Session::get('error') !!}
-        </div>
-    @endif
-    @if (Session::has('warning'))
-        <div class="alert alert-warning">
-            <i class="fa fa-exclamation-triangle"></i> {!!Session::get('warning') !!}
-        </div>
-    @endif
-    @if (Session::has('info'))
-        <div class="alert alert-info">
-            <i class="fa fa-info-circle"></i> {!!Session::get('info') !!}
-        </div>
-    @endif
-
-    @if ($errors->has())
-        <div class="alert alert-danger">
-        <i class="fa fa-exclamation-triangle"></i>
-        <b class="alert-title">Veuillez résoudre les problèmes suivants pour pouvoir poursuivre : </b>
-        @foreach ($errors->all() as $error)
-            <p class="m-l-md"><i class="fa fa-caret-right"></i> {!!$error !!}</p>
-        @endforeach
-        </div>
-    @endif
+    @include('flash')
 
 	@yield('content')
 	</div>
