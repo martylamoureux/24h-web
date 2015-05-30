@@ -29,7 +29,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('/') }}">Gestion portuaire le havre <i class="text-danger">24h</i></a>
+            <a class="navbar-brand" href="{{ url('/') }}"><strong>Gestion portuaire le havre</strong> <i
+                        class="text-danger">24h</i></a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -41,6 +42,7 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ route('about') }}">A propos</a></li>
                 @if (Auth::guest())
                     <li><a href="{{ url('/auth/login') }}">Se connecter</a></li>
                 @else

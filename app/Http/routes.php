@@ -41,3 +41,8 @@ $router->group(['prefix'=>'clients'], function() use ($router) {
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 ]);
+
+Route::get('about', [
+    'as' => 'about',
+    'uses' => 'HomeController@about',
+]);
