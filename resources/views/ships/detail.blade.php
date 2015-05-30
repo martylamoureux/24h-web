@@ -63,7 +63,7 @@
                     @empty
                         <tr>
                             <td colspan="4" class="lead text-center text-muted">
-                                Aucune Escape
+                                Aucune Escale
                             </td>
                         </tr>
                     @endforelse

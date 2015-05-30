@@ -114,7 +114,7 @@ class ContainersController extends Controller
             foreach ($ship->containers as $container) {
                 if ($container->id == $container_id)
                     $container->capacity = $req->get('capacity');
-                
+
                 $totalCapacity += $container->capacity;
             }
 
