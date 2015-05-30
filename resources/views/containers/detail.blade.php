@@ -18,11 +18,13 @@
     </div>
     <div class="col-md-7">
 
-        <div class="btn-group">
-            <a class="btn btn-success" href="{{ route('movements.add', [$client_id, $container]) }}">
-                <i class="fa fa-plus"></i> Nouveau Mouvement
-            </a>
-        </div>
+        @if (Auth::user()->type == 'AG')
+            <div class="btn-group">
+                <a class="btn btn-success" href="{{ route('movements.add', [$client_id, $container]) }}">
+                    <i class="fa fa-plus"></i> Nouveau Mouvement
+                </a>
+            </div>
+        @endif
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -30,7 +32,9 @@
                     <tr>
                         <th>Escale</th>
                         <th>Type</th>
-                        <th> </th>
+                        @if (Auth::user()->type == 'AG')
+                            <th> </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -46,14 +50,16 @@
                                     Déchargement
                                 @endif
                             </td>
-                            <td>
-                                <a class="btn btn-primary" rel="tooltip" title="Modifier" href="{{ route('movements.edit', [$client_id, $container->id, $movement]) }}">
-                                    <i class="fa fa-pencil"></i>
-                                </a>
-                                <a class="btn btn-danger delete" rel="tooltip" title="Supprimer" href="{{ route('movements.delete', [$client_id, $container->id, $movement]) }}">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                            </td>
+                            @if (Auth::user()->type == 'AG')
+                                <td>
+                                    <a class="btn btn-primary" rel="tooltip" title="Modifier" href="{{ route('movements.edit', [$client_id, $container->id, $movement]) }}">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a class="btn btn-danger delete" rel="tooltip" title="Supprimer" href="{{ route('movements.delete', [$client_id, $container->id, $movement]) }}">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

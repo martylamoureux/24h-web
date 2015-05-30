@@ -18,11 +18,13 @@
     </div>
     <div class="col-md-7">
 
-        <div class="btn-group">
-            <a class="btn btn-success" href="{{ route('containers.add', $client) }}">
-                <i class="fa fa-plus"></i> Nouveau Conteneur
-            </a>
-        </div>
+        @if (Auth::user()->type == 'AG')
+            <div class="btn-group">
+                <a class="btn btn-success" href="{{ route('containers.add', $client) }}">
+                    <i class="fa fa-plus"></i> Nouveau Conteneur
+                </a>
+            </div>
+        @endif
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -31,7 +33,9 @@
                         <th>ID</th>
                         <th>Navire</th>
                         <th>Capacité</th>
+                        @if (Auth::user()->type == 'AG')
                         <th> </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +44,7 @@
                             <td><a href="{{ route('containers.detail', [$client->id, $container]) }}">{{ $container->id }}</a></td>
                             <td><a href="{{ route('containers.detail', [$client->id, $container]) }}">{{ $container->ship }}</a></td>
                             <td>{{ $container->capacity }} EVP</td>
+                            @if (Auth::user()->type == 'AG')
                             <td>
                                 <a class="btn btn-primary" rel="tooltip" title="Modifier" href="{{ route('containers.edit', [$client, $container]) }}">
                                     <i class="fa fa-pencil"></i>
@@ -48,6 +53,7 @@
                                     <i class="fa fa-trash-o"></i>
                                 </a>
                             </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

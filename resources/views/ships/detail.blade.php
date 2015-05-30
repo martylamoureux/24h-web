@@ -18,11 +18,13 @@
     </div>
     <div class="col-md-7">
 
-        <div class="btn-group">
-            <a class="btn btn-success" href="{{ route('stops.add', [$company_id, $ship]) }}">
-                <i class="fa fa-plus"></i> Nouvelle Escale
-            </a>
-        </div>
+        @if (Auth::user()->type == 'AG')
+            <div class="btn-group">
+                <a class="btn btn-success" href="{{ route('stops.add', [$company_id, $ship]) }}">
+                    <i class="fa fa-plus"></i> Nouvelle Escale
+                </a>
+            </div>
+        @endif
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -32,7 +34,9 @@
                         <th>Date Sortie</th>
                         <th>Nombre de chargement</th>
                         <th>Nombre de déchargement</th>
+                        @if (Auth::user()->type == 'AG')
                         <th> </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +44,7 @@
                         <tr>
                             <td>{{ $stop->getDateInString() }}</td>
                             <td>{{ $stop->getDateOutString() }}</td>
+                            @if (Auth::user()->type == 'AG')
                             <td>
                                 <span class="badge">{{ App\Movement::where('stop_id', $stop->id)->where('type', 'D')->count() }}</span>
                             </td>
@@ -53,6 +58,7 @@
                                     <i class="fa fa-trash-o"></i>
                                 </a>
                             </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

@@ -3,6 +3,7 @@
 use App\Client;
 use App\Company;
 use App\User;
+use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
 
 class ClientsController extends Controller {
@@ -25,7 +26,9 @@ class ClientsController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('agent');
+		$this->middleware('agent', ['except' => [
+            'detail'
+        ]]);
 	}
 
     public static function routes($router)
@@ -85,7 +88,7 @@ class ClientsController extends Controller {
         $user->name = $client->name;
         $user->email = $req->get('email');
         $user->password = $req->get('password');
-        $user->type = 'CO';
+        $user->type = 'CL';
         $user->save();
         $client->user_id = $user->id;
         $client->save();
@@ -126,13 +129,17 @@ class ClientsController extends Controller {
     public function delete($client_id, Request $req)
     {
         $client = Client::findOrFail($client_id);
+        $client->user->delete();
         $client->delete();
         $req->session()->flash('success', "Le client $client a bien été supprimé.");
         return redirect()->route('clients.index');
     }
 
-    public function detail($client_id, Request $req)
+    public function detail($client_id, Request $req, Guard $auth)
     {
+        if ($auth->user()->type == 'CO' || ($auth->user()->type == 'CL' && $client_id != $auth->user()->client->id))
+            abort(403, "Non autorisé");
+
         $client = Client::findOrFail($client_id);
 
         return view('clients.detail', compact('client'));

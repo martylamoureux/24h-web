@@ -36,8 +36,14 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 @if(Auth::check())
-                    <li><a href="{{ route('companies.index') }}">Compagnies</a></li>
-                    <li><a href="{{ route('clients.index') }}">Clients</a></li>
+                    @if (Auth::user()->type == 'AG')
+                        <li><a href="{{ route('companies.index') }}">Compagnies</a></li>
+                        <li><a href="{{ route('clients.index') }}">Clients</a></li>
+                    @elseif (Auth::user()->type == 'CO')
+                        <li><a href="{{ route('companies.detail', Auth::user()->company) }}">Mes données</a></li>
+                    @elseif (Auth::user()->type == 'CL')
+                        <li><a href="{{ route('clients.detail', Auth::user()->client) }}">Mes données</a></li>
+                    @endif
                 @endif
             </ul>
 
@@ -48,7 +54,16 @@
                 @else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+                           aria-expanded="false">
+                           @if (Auth::user()->type == 'AG')
+                              <span class="label label-danger">Agent Portuaire</span>
+                           @elseif (Auth::user()->type == 'CO')
+                              <span class="label label-success">Compagnie</span>
+                           @elseif (Auth::user()->type == 'CL')
+                              <span class="label label-primary">Client</span>
+                           @endif
+                           {{ Auth::user()->name }}
+                           <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ url('/auth/logout') }}">Déconnexion</a></li>
                         </ul>

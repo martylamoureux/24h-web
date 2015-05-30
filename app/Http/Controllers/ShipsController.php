@@ -3,6 +3,7 @@
 use App\Company;
 use App\Ship;
 use App\User;
+use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
 
 class ShipsController extends Controller {
@@ -26,7 +27,7 @@ class ShipsController extends Controller {
 	public function __construct()
 	{
 		$this->middleware('agent', ['except' => [
-
+            'detail'
         ]]);
 	}
 
@@ -104,8 +105,11 @@ class ShipsController extends Controller {
         return redirect()->route('companies.detail', $company_id);
     }
 
-    public function detail($company_id, $ship_id, Request $req)
+    public function detail($company_id, $ship_id, Request $req, Guard $auth)
     {
+        if ($auth->user()->type == 'CL' || ($auth->user()->type == 'CO' && $company_id != $auth->user()->company->id))
+            abort(403, "Non autorisé");
+
         $ship = Ship::findOrFail($ship_id);
 
         return view('ships.detail', compact('ship', 'company_id'));
