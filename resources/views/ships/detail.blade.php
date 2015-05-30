@@ -32,6 +32,8 @@
                     <tr>
                         <th>Date Entrée</th>
                         <th>Date Sortie</th>
+                        <th>Nombre de chargement</th>
+                        <th>Nombre de déchargement</th>
                         @if (Auth::user()->type == 'AG')
                         <th> </th>
                         @endif
@@ -43,6 +45,11 @@
                             <td>{{ $stop->getDateInString() }}</td>
                             <td>{{ $stop->getDateOutString() }}</td>
                             @if (Auth::user()->type == 'AG')
+                            <td>
+                                <span class="badge">{{ App\Movement::where('stop_id', $stop->id)->where('type', 'D')->count() }}</span>
+                            </td>
+                            <td><span class="badge">{{ App\Movement::where('stop_id', $stop->id)->where('type', 'C')->count()
+                            }}</span></td>
                             <td>
                                 <a class="btn btn-primary" rel="tooltip" title="Modifier" href="{{ route('stops.edit', [$company_id, $ship->id, $stop]) }}">
                                     <i class="fa fa-pencil"></i>
