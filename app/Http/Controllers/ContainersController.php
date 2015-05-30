@@ -66,28 +66,27 @@ class ContainersController extends Controller
         ]);
 
 
-        $ship = Ship::find($req->get('ship_id'))->limit(1);
+        $ship = Ship::find($req->get('ship_id'))->first();
 
-        $totalCapacity = 0;
+        $totalCapacity = $req->get('capacity');
 
         foreach ($ship->containers as $container) {
             $totalCapacity += $container->capacity;
         }
-        
-        if ($ship->capacity > $totalCapacity) {
 
-            $container = new Container($req->all());
-            $container->client_id = $client_id;
-            $container->save();
+        if ($totalCapacity > $ship->capacity) {
+            $req->session()->flash('error', "Le conteneur ne peut être ajouté, le navire a dépassé sa capacité maximale.");
 
-            $req->session()->flash('success', "Le conteneur $container a bien été créé.");
+            return redirect()->back()->withInput();
+        }
 
-            return redirect()->route('clients.detail', $client_id);
+        $container = new Container($req->all());
+        $container->client_id = $client_id;
+        $container->save();
 
-            }
-            $req->session()->flash('error', "Le conteneur $container ne peux pas être crée, il a une capacité trop élevée");
+        $req->session()->flash('success', "Le conteneur $container a bien été créé.");
 
-            return redirect()->route('clients.detail', $client_id);
+        return redirect()->route('clients.detail', $client_id);
 
 
         }
@@ -107,6 +106,24 @@ class ContainersController extends Controller
                 'capacity' => 'required|in:1,2',
                 'ship_id' => 'required',
             ]);
+
+
+            $ship = Ship::find($req->get('ship_id'))->first();
+            $totalCapacity = 0;
+
+            foreach ($ship->containers as $container) {
+                if ($container->id == $container_id)
+                    $container->capacity = $req->get('capacity');
+                
+                $totalCapacity += $container->capacity;
+            }
+
+            if ($totalCapacity > $ship->capacity) {
+                $req->session()->flash('error', "Le conteneur ne peut être ajouté, le navire a dépassé sa capacité maximale.");
+
+                return redirect()->back()->withInput();
+            }
+
 
             $container->fill($req->all());
             $container->save();
