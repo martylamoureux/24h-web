@@ -38,6 +38,13 @@ $router->group(['prefix'=>'clients'], function() use ($router) {
     });
 });
 
+$router->group(['prefix'=>'stats'], function() use ($router) {
+    $router->any('quantity-by-month-companies', ['uses' => 'StatsController@quantityOnMonth',
+        'as' => 'stats.quantityOnMonth']);
+    $router->any('quantity-by-month-clients', ['uses' => 'StatsController@quantityOnMonth_clients',
+        'as' => 'stats.quantityOnMonth_clients']);
+});
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 ]);
