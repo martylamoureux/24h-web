@@ -44,6 +44,23 @@
 					</form>
 				</div>
 			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">Comptes de test</div>
+				<div class="panel-body">
+					<p>
+					    <b>Agent Portuaire :</b> agent@lehavre.fr / agent
+					</p>
+					<p>
+					    <b>Compagnie CMA CGM :</b> contact@cmacgm.fr / cmacgm
+					</p>
+					<p>
+					    <b>Compagnie Hapag-Lloyd :</b> contact@hapag-lloyd.fr / hapag-lloyd
+					</p>
+					<p>
+					    <b>Client Hugues DUFLO :</b> hugues@duflo.fr / hugues
+					</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

@@ -41,6 +41,12 @@ class Stop extends Model {
         return trim(ucwords(strftime("%A %e %B %Y", $this->getDateOut()->getTimestamp())));
     }
 
+    public function getDateInShortString() {
+        if ($this->date_in == null)
+            return "";
+        return trim(ucwords(strftime("%B %Y", $this->getDateIn()->getTimestamp())));
+    }
+
     public function setDateInAttribute($date) {
         if ($date != "")
             $this->attributes['date_in'] = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');

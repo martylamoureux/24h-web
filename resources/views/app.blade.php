@@ -10,6 +10,7 @@
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,6 +40,15 @@
                     @if (Auth::user()->type == 'AG')
                         <li><a href="{{ route('companies.index') }}">Compagnies</a></li>
                         <li><a href="{{ route('clients.index') }}">Clients</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                               Statistiques
+                               <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ route('stats.quantityOnMonth') }}">Quantité sur un Mois</a></li>
+                            </ul>
+                        </li>
                     @elseif (Auth::user()->type == 'CO')
                         <li><a href="{{ route('companies.detail', Auth::user()->company) }}">Mes données</a></li>
                     @elseif (Auth::user()->type == 'CL')
