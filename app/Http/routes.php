@@ -40,5 +40,4 @@ $router->group(['prefix'=>'clients'], function() use ($router) {
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
 ]);
